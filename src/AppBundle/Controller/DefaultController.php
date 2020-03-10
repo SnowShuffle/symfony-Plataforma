@@ -12,6 +12,7 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/Students", name="students")
+     * @Route("/", name="home")
      */
     public function indexStudents(Request $request)
     {
