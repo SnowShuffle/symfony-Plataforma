@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class = 'container'>
+        <div class='row'>
+            <div class="col-md-6 col-md-offset-2">
+                <table class= 'table table-hover'>
+                    <thead>
+                        <tr><th><a class="btn btn-primary" href='/insert/student'>Crear</a></th></tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Curso</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.age }}</td>
+                            <td>{{ student.grade }}</td>
+                            <td><a class="btn btn-warning" href="/update/student/{{ student.id }}">Editar</button></td>
+                            <td><a class="btn btn-danger" href="/delete/student/{{ student.id }}">Borrar</button></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

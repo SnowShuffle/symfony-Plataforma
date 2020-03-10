@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class = 'container'>
+        <div class='row'>
+            <div class="col-md-6 col-md-offset-2">
+                <table class= 'table table-hover'>
+                    <thead>
+                        <tr><th><a class="btn btn-primary" href='/insert/mark'>Crear</a></th></tr>
+                        <tr>
+                            <th>Fecha Registro</th>
+                            <th>Materia</th>
+                            <th>Estudiante</th>
+                            <th>Calificacion</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for mark in marks %}
+                        <tr>
+                            <td>{{ mark.registerDate | date("Y-m-d H:i:s") }}</td>
+                            <td>{{ mark.studentId }}</td>
+                            <td>{{ mark.subjectId }}</td>
+                            <td>{{ mark.finalMark }}</td>
+                            <td><a class="btn btn-warning" href="/update/mark/{{ mark.id }}">Editar</button></td>
+                            <td><a class="btn btn-danger" href="/delete/mark/{{ mark.id }}">Borrar</button></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class = 'container'>
+    <div class='row'>
+        <div class="col-md-6 col-md-offset-2">
+            {{ form_start(createMarkForm) }}
+            {{ form_widget(createMarkForm) }}
+            {{ form_end(createMarkForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
