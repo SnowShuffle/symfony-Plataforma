@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Repository\MarkRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Mark
 {
-    /*     * @ORM\ManyToOne(targetEntity="Student", inversedBy="mark")
+    /*     
+     * @ORM\ManyToOne(targetEntity="Student", inversedBy="mark")
      * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
      */
     private $student;

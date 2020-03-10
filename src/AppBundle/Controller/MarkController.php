@@ -72,9 +72,9 @@ class MarkController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $markValues = $form->getData();
-            $mark->setRegisterDate($markValues['register_date']);
-            $mark->setStudentId($markValues['student_id']);
-            $mark->setSubjectId($markValues['subject_id']);
+            $mark->setRegisterDate(new \DateTime(date("Y-m-d H:i:s")));
+            $mark->setStudentId($markValues['student_id']->getId());
+            $mark->setSubjectId($markValues['subject_id']->getId());
             $mark->setFinalMark($markValues['final_mark']);
             $em->flush();
             return $this->redirectToRoute('mark');
@@ -82,7 +82,7 @@ class MarkController extends Controller
         return $this->render(
             'default/createmark.html.twig',
             [
-                'createmarkForm' => $form->createView()
+                'createMarkForm' => $form->createView()
             ]
         );
     }
@@ -105,8 +105,9 @@ class MarkController extends Controller
     }
 
 
-    public function markForm(Mark $values)
+    public function markForm(Mark $markValues)
     {
+        $this->markValues = $markValues;
         $form = $this->createFormBuilder()
             ->add(
                 'student_id',
@@ -114,7 +115,14 @@ class MarkController extends Controller
                 [
                     'class' => 'AppBundle:Student',
                     'choice_label' => 'name',
-                    'label' => 'Estudiante'
+                    'label' => 'Estudiante',
+                    'choice_attr' => function ($choice, $key,  $value) {
+                        if ($this->markValues->getStudentId() == $value) {
+                            return ['selected' => 'selected'];
+                        } else {
+                            return ['value' => $value];
+                        }
+                    }
                 ]
             )
             ->add(
@@ -123,7 +131,14 @@ class MarkController extends Controller
                 [
                     'class' => 'AppBundle:Subjects',
                     'choice_label' => 'name',
-                    'label' => 'Materia'
+                    'label' => 'Materia',
+                    'choice_attr' => function ($choice, $key,  $value) {
+                        if ($this->markValues->getSubjectId() == $value) {
+                            return ['selected' => 'selected'];
+                        } else {
+                            return ['value' => $value];
+                        }
+                    }
                 ]
             )
             ->add(
@@ -131,7 +146,7 @@ class MarkController extends Controller
                 IntegerType::class,
                 [
                     'label' => 'Calificacion Final',
-                    'attr' => ['min' => 1, 'max' => 10]
+                    'attr' => ['min' => 1, 'max' => 10, 'value' => $this->markValues->getFinalMark()]
                 ]
             )
             ->add(
@@ -144,5 +159,26 @@ class MarkController extends Controller
             )
             ->getForm();
         return $form;
+    }
+
+
+
+    /**
+     * @Route("/Mark", name="mark")
+     */
+    public function indexMark(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query =  'SELECT m.id,m.registerDate,st.name as student_name,su.name as subject_name,m.finalMark
+                FROM mark m
+                INNER JOIN student st ON (m.student_id = st.id)
+                INNER JOIN subjects su ON (m.subject_id = su.id)';
+        $result = $em->getConnection()->prepare($query);
+        $result->execute();
+
+        return $this->render(
+            'default/Mark.html.twig',
+            array('marks' => $result->fetchAll())
+        );
     }
 }

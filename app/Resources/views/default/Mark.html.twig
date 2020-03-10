@@ -20,8 +20,8 @@
                     {% for mark in marks %}
                         <tr>
                             <td>{{ mark.registerDate | date("Y-m-d H:i:s") }}</td>
-                            <td>{{ mark.studentId }}</td>
-                            <td>{{ mark.subjectId }}</td>
+                            <td>{{ mark.student_name }}</td>
+                            <td>{{ mark.subject_name }}</td>
                             <td>{{ mark.finalMark }}</td>
                             <td><a class="btn btn-warning" href="/update/mark/{{ mark.id }}">Editar</button></td>
                             <td><a class="btn btn-danger" href="/delete/mark/{{ mark.id }}">Borrar</button></td>
